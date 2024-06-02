@@ -8,12 +8,12 @@ volatile int lcdMode = 0;
 int displayedLCDMode = lcdMode;
 
 // Humedad - https://maxpromer.github.io/LCD-Character-Creator/
-byte humIcon[8] = { 
-  B00100, B00100, B01010, B01010, B10001, B10001, B10001, B01110 
+byte humIcon[8] = {
+  B00100, B00100, B01010, B01010, B10001, B10001, B10001, B01110
 };
 // Temperatura - https://maxpromer.github.io/LCD-Character-Creator/
-byte tempIcon[8] = { 
-  B00100, B01010, B01010, B01110, B01110, B11111, B11111, B01110 
+byte tempIcon[8] = {
+  B00100, B01010, B01010, B01110, B01110, B11111, B11111, B01110
 };
 // Luz - https://maxpromer.github.io/LCD-Character-Creator/
 byte bulbIcon[8] = {
@@ -67,7 +67,7 @@ void turnLCDOff() {
 void printLCDValues(int temperature, int humidity, int light, bool presence) {
   // Si el modo ha cambiado, se eliminan todos los datos del LCD
   if (displayedLCDMode != lcdMode) {
-    lcd.clear(); // limpiar el LCD
+    lcd.clear();  // limpiar el LCD
     displayedLCDMode = lcdMode;
   }
   // El siguiente codigo gestiona el contenido del LCD
@@ -99,7 +99,7 @@ void printLCDValues(int temperature, int humidity, int light, bool presence) {
   }
 }
 
-// Función asociada a la interrupción del boton. Cuenta con un código "debouncer", que 
+// Función asociada a la interrupción del boton. Cuenta con un código "debouncer", que
 // permite que el cambio de modo solo se de una vez cada 200ms. Esto se debe a que las
 // inestabilidades en la corriente pueden hacer que una interrupción se ejecute una o
 // más veces por cada vez que se pulsa el boton
@@ -109,9 +109,9 @@ void buttonPressHandler() {
   // Cambia el modo del LCD
   if (interruptTime - lastInterruptTime > 400) {
     lcdMode++;
-    lcdMode = lcdMode % 2; // Limita los modos del LCD a 2
+    lcdMode = lcdMode % 2;  // Limita los modos del LCD a 2
     Serial.println(lcdMode);
   }
-  
+
   lastInterruptTime = interruptTime;
 }
