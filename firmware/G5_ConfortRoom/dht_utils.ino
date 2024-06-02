@@ -5,7 +5,7 @@ dht dhtSensor;
 
 // Función para la lectura del sensor DHT22. El resultado para los parámetros de la temperatura
 // y la humedad se guardan en los punteros que se pasan a la función.
-void readDHTSensor (float* temperature, float* humidity) {
+void readDHTSensor(float* temperature, float* humidity) {
   // Configuración de las variables locales necesarias para la lectura
   // float temp = dhtSensor.readTemperature(); // Temperatura
   // float hum = dhtSensor.readHumidity(); // Humedad

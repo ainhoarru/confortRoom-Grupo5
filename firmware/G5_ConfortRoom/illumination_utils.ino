@@ -27,7 +27,7 @@ bool readMotionSensor() {
   return sensorVal == HIGH;
 }
 
-// Gestiona el LED RGB, que se encenderá en caso de que se detecte presencia y no 
+// Gestiona el LED RGB, que se encenderá en caso de que se detecte presencia y no
 // haya luz
 void illuminationManagement(int ldrValue, bool isPresence) {
   // Solo se enciende el led en verde si hay poca luz y se detecta presencia
@@ -51,9 +51,9 @@ void rgbLedColor(int redValue, int greenValue, int blueValue) {
 
 // Convierte los valores analógicos del LDR a Lux - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor
 float analogValueToLux(int analogVal) {
-  float voltage = (analogVal / (float)1024) * 5; // Valor analógico a voltage
-  float ldrVoltage = 5 - voltage; // Valor del voltage en la LDR
-  float ldrResistance = ldrVoltage/voltage * 10000; // Resistencia de la LDR
+  float voltage = (analogVal / (float)1024) * 5;       // Valor analógico a voltage
+  float ldrVoltage = 5 - voltage;                      // Valor del voltage en la LDR
+  float ldrResistance = ldrVoltage / voltage * 10000;  // Resistencia de la LDR
   float lux = pow(RL10 * 1e3 * pow(10, GAMMA) / ldrResistance, (1 / GAMMA));
 
   return lux;
