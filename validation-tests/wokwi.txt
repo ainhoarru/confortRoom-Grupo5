@@ -1,7 +1,0 @@
-# Confort Room - Grupo 5
-
-Para la realización de la actividad, primero se ha creado el código y una simulación del montaje en Wokwi. Este proyecto se encuentra disponible en el enlace:
-
-- https://wokwi.com/projects/399589917777527809
-
-Partiendo de esa base, se ha exportado el proyecto y se le han realizado unas modificaciones al codigo para que funcione sobre la placa Arduino Uno física. Las modificaciones son
