@@ -26,4 +26,8 @@ La placa incluye cuatro LEDs:
      - 32-127: caracteres ASCII estándar
      - 128-255: caracteres y símbbolos de Europa occidental y cirílicos
 
+4) Sensor de Movimiento Infrarrojo Pasivo (PIR): se trata de un sensor de movimiento que se activa al seleccionarlo (haciendo clic en él) mientras se ejecuta la simulación o al abrir la correspondiente ventana emergente. Al activarlo, el pinde salida se elevará duurante 5 segundo y después bajará. Durante los siguientes 1,2 segundos, el correspondiente tiempo de inhibición, el sensor ignorará cualquier tipo de entrada adicional y, tras este tiempo, comenzará con su correspondiente detección del movimiento.
+   La duración del pin de salida se puede configurar mediante elatributo delayTime o con el potenciómetro en su versión física. 
 
+5) Sensor DHT11: se trata de un sensor de temperatura y humedad compuesto que se conecta a un microcontrolador de 8 bits de alto rendimiento. Incluye una resistencia y un dispositivvo de temperatura NTC con sensación de humedad.
+   Presenta coeficientes de calibración precisos que se almacenan en la memoria del programa OTP, donde los sensores internos detectan las señales en el proceso. Consta de un sistema de interfaz serial de un solo cable.
