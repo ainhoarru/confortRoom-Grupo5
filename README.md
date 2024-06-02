@@ -16,7 +16,8 @@ A continuación se listan los elementos incluidos en el proyecto
 - 1 led RGB para la iluminación del entorno.
 - 1 sensor LDR para la medición de la luz ambiente.
 - Sensor DHT11 para la medición de la temperatura y la humedad ambiente.
-- Sensor de movimiento PIR KS0052 de keyestudio.
+- Sensor de movimiento PIR KS0052 de Keyestudio.
+- Servo motor KS0194 de Keyestudio para el control de la posición de la ventana de la habitación.
 
 
 ## Funcionamiento
@@ -30,7 +31,9 @@ El dispositivo cuenta con un display LCD que permite la visualización de 4 dato
 
 Este display solo se encenderá y mostrará la información en caso de que detecte movimiento en la habitación. Cuenta con un botón que permite controlar que datos se muestran, dado que se exiben 2 datos simultaneamente: temperatura y humedad, o luz y detección de movimiento.
 
-Además, el sistema permite el control sobre la luz de la habitación. Dicha luz se encenderá en caso de detección de movimiento y la luz ambiental se encuentre por debajo del umbral establecido.
+Además, el sistema permite el control sobre dos elementos en función de las lecturas de los sensores
+- Mediante un led se gestiona la luz de la habitación. Dicha luz se encenderá en caso de detección de movimiento y la luz ambiental se encuentre por debajo del umbral establecido.
+- Mediante un servo motor se gestiona la posición de una ventana, que permite la ventilación de la habitación dependiendo de las lecturas de luz, temperatura y humedad del entorno.
 
 
 ### Demo
