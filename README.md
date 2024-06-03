@@ -45,6 +45,9 @@ TODO: introducir imagen con enlace al video
 A contiuación se listarán los componentes necesarios para la realización de la simulación. 
 
 ### Arduino UNO
+
+![Arduino_UNO](https://upload.wikimedia.org/wikipedia/commons/5/59/Arduino_uno.png)
+
 Se trata de una placa de microcontrolador con alimentada por el chip ATmega328p, que tiene 32kB de memoria de proograma Flash, 2kB de SRAM y 1kB de EEPROM. Esta incluye pines y leds distribuidos de la siguiente manera:
    - Tiene pines GPIO digitales del 0 al 13. Los pines desde el A0 hasta el A5 funcionan además como entrada analógica. Los pines digitales 3, 5, 6, 9, 10 y 11 tienen soporte de hardware PWM.
    - Tiene tres pines de tierra, GND.1, GND.2 y GND.3
@@ -60,6 +63,9 @@ La placa incluye cuatro LEDs:
 [Datasheet](https://docs.wokwi.com/parts/wokwi-arduino-uno)
 
 ### Módulo sensor de fotorresistor (LDR)
+
+![LDR](https://alltopnotch.co.uk/wp-content/uploads/imported/4/LDR-Photoresistor-Light-Detection-Sensor-Module-Dependent-Resistor-Arduino-PIC-362145909694-3.JPG)
+
 Este módulo incluye un LDR, es decir, una resistencia dependiente de la luz; conectado en serie, mediante del pin A0, con una resistencia de 10K. El voltaje de este pin depende de la cantidad de luz que incide sobre el sensor (se puede leer conectando el pin A0 a un pin de entrada analógica y empleando la función analogRead()).
 La sensibilidad del LDR se controla a través de dos parámetro,s r|10, que es la resistencia del LDr a un nivel de iluminación de 10lux, y el valor gamma, el cual determina la pendiente del gráfico log(R)/log(llux) (estos datos vienen especificados en al hoja de datos del LDR).
   El pin digital de salida D0 podemos establecer el umbral, ajustando el potenciómetro integrado, para que cuando esté oscuro se ponga alto y cuando haya luz se ponga bajo. El umbral que viene predeterminado es 2,5V / 100lux aproximádamente.
@@ -67,6 +73,8 @@ La sensibilidad del LDR se controla a través de dos parámetro,s r|10, que es l
 [Datasheet](https://docs.wokwi.com/parts/wokwi-photoresistor-sensor)
   
 ### Pantalla LCD de 2 líneas y 16 caracteres por línea (LCD 1602)
+
+![LCD_1602](https://upload.wikimedia.org/wikipedia/commons/9/94/Lcd_16x2.png)
 
 Este componente tiene dos configuraciones posibles, la estándar y la I2C. Emplea el chip controlador LCD Hitachi HD44780, el cual viene con una fuente incorporada y con la capaciddad de definición de hasta 8 caracteres personalizados.
 Se trata de una pantalla que proyecta los resultados configurados en el código y que dspone de 256 caracteres con lo siguientes rangos:
@@ -78,6 +86,8 @@ Se trata de una pantalla que proyecta los resultados configurados en el código 
 [Datasheet](https://docs.wokwi.com/parts/wokwi-lcd1602)
 
 ### Sensor de Movimiento Infrarrojo (PIR)
+
+![PIR](XX)
 
 Se trata de un sensor de movimiento que se activa al seleccionarlo (haciendo clic en él) mientras se ejecuta la simulación o al abrir la correspondiente ventana emergente. Al activarlo, el pinde salida se elevará duurante 5 segundo y después bajará. Durante los siguientes 1,2 segundos, el correspondiente tiempo de inhibición, el sensor ignorará cualquier tipo de entrada adicional y, tras este tiempo, comenzará con su correspondiente detección del movimiento.
    La duración del pin de salida se puede configurar mediante elatributo delayTime o con el potenciómetro en su versión física. 
@@ -94,12 +104,16 @@ Se trata de un sensor de temperatura y humedad compuesto que se conecta a un mic
 
 ### Micro Servomotor Estándar
 
+![Micro_Servomotor](https://bestarduino.com/upload/201902/06/201902061139001202.jpg)
+
 Se trata de un tipo de motor compacto diseñado para proporcionar un control del movimiento angular. Consta de un motor de corriente continua, un circuito de control y un mecanismo de retroalimentación de posición, como un potenciómetro o un codificador. Esta retroalimentación permite al sistema controlar con precisión la posición del eje del motor.
 Tiene un rango de movimiento de 180 grados y tiene una velocidad de rotación variable.Se controlan mediante señales de pulso modulado en anchura (PWM) generadas por un microcontrolador o un dispositivo electrónico. Al variar el ancho del pulso de control, es posible controlar la posición del eje del motor y, por lo tanto, el movimiento del dispositivo al que está conectado.
 
 [Datasheet](https://docs.wokwi.com/parts/wokwi-servo)
 
 ### Termistor NTC
+
+![Termistor](https://fw.lnwfile.com/_/fw/_raw/eo/ws/0u.jpg)
 
 Se trata de un sensor de temperatura analógico que tiene una resistencia eléctrica que disminuye a medida que aumenta la temperatura. Esto significa que su resistencia disminuye a medida que aumenta la temperatura y viceversa. Este cambio en la resistencia se utiliza para medir la temperatura ambiente.
 Se conecta en un circuito de división de voltaje junto con una resistencia de referencia conocida. La tensión en el punto de conexión entre el termistor y la resistencia de referencia se mide y se utiliza para determinar la resistencia del termistor, que a su vez se traduce en una temperatura utilizando una tabla de calibración o una ecuación específica del dispositivo.
