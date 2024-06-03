@@ -38,7 +38,7 @@ Además, el sistema permite el control sobre dos elementos en función de las le
 
 ### Demo
 
-TODO: introducir imagen con enlace al video
+[![Demo](./doc/img/demo_circuit.png)](https://youtu.be/6NCw_0ztRkU)
 
 ## Componentes
 
