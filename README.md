@@ -1,4 +1,3 @@
-
 # Confort Room - Grupo 5
 
 Confort Room es el proyecto de simulación de la monitorización de una habitación inteligente desarrollado en el contexto de la asignatura de Equipos e Instrumentación Electrónica del Máster en Ingeniería de Telecomunicación impartido en la UNIR.
@@ -37,6 +36,8 @@ Además, el sistema permite el control sobre dos elementos en función de las le
 
 
 ### Demo
+
+Se ha grabado un video con la demo del codigo con el circuito físico. Haz click en la siguiente imagen para acceder al video!
 
 [![Demo](./doc/img/demo_circuit.png)](https://youtu.be/6NCw_0ztRkU)
 
