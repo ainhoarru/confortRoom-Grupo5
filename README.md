@@ -119,3 +119,9 @@ Se trata de un sensor de temperatura analógico que tiene una resistencia eléct
 Se conecta en un circuito de división de voltaje junto con una resistencia de referencia conocida. La tensión en el punto de conexión entre el termistor y la resistencia de referencia se mide y se utiliza para determinar la resistencia del termistor, que a su vez se traduce en una temperatura utilizando una tabla de calibración o una ecuación específica del dispositivo.
 
 [Datasheet](https://docs.wokwi.com/parts/wokwi-ntc-temperature-sensor)
+
+
+### Mejoras propuestas
+
+Como opciones de mejora se ha implementado un buzzer que se active en el modo de emergencia y un display de 4 dígitos que actua como display de la temperatura actual de la sala, a modo de termómetro. 
+[Enlace](https://wokwi.com/projects/399625353140785153)
