@@ -87,7 +87,7 @@ Se trata de una pantalla que proyecta los resultados configurados en el código 
 
 ### Sensor de Movimiento Infrarrojo (PIR)
 
-![PIR](XX)
+![PIR](https://www.electan.com/images/PIR%20Motion%20Sensor.jpg)
 
 Se trata de un sensor de movimiento que se activa al seleccionarlo (haciendo clic en él) mientras se ejecuta la simulación o al abrir la correspondiente ventana emergente. Al activarlo, el pinde salida se elevará duurante 5 segundo y después bajará. Durante los siguientes 1,2 segundos, el correspondiente tiempo de inhibición, el sensor ignorará cualquier tipo de entrada adicional y, tras este tiempo, comenzará con su correspondiente detección del movimiento.
    La duración del pin de salida se puede configurar mediante elatributo delayTime o con el potenciómetro en su versión física. 
