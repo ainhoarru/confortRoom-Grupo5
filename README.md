@@ -122,7 +122,9 @@ Se conecta en un circuito de división de voltaje junto con una resistencia de r
 [Datasheet](https://docs.wokwi.com/parts/wokwi-ntc-temperature-sensor)
 
 
-### Mejoras propuestas
+## Mejoras propuestas
 
 Como opciones de mejora se ha implementado un buzzer que se active en el modo de emergencia y un display de 4 dígitos que actua como display de la temperatura actual de la sala, a modo de termómetro. 
 [Enlace](https://wokwi.com/projects/399625353140785153)
+
+![Mejoras](./doc/img/wokwi_mejoras.png)
