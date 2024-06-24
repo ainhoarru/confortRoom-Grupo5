@@ -1,6 +1,8 @@
 # Pruebas de validación
 
-Para la realización de la actividad, primero se ha creado el código y una simulación del montaje en Wokwi. Este proyecto se encuentra disponible en el siguiente [enlace](https://wokwi.com/projects/399605839733059585).
+Para la realización de la actividad, primero se ha creado el código y una simulación del montaje en Wokwi. Este proyecto se encuentra disponible en los siguientes enlaces
+- [Enlace](https://wokwi.com/projects/401550694219162625) para la versión que emplea fuzzy logic.
+- [Enlace](https://wokwi.com/projects/401550694219162625) para la versión que no emplea fuzzy logic.
 
 Partiendo de esa base, se ha exportado el proyecto y se le han realizado unas modificaciones al codigo para que funcione sobre la placa Arduino Uno física. Las modificaciones son:
 
