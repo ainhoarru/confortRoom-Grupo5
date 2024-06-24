@@ -4,6 +4,22 @@
 const float GAMMA = 0.7;
 const float RL10 = 50;
 
+// Objetos para la libreria Fuzzy
+Fuzzy *fuzzyIllumination = new Fuzzy();
+
+// Definimos las variables FuzzySet para la logica Fuzzy
+// Presencia
+FuzzySet* noPresenceInput = new FuzzySet(0, 0, 0, 0); // Representa 'false'
+FuzzySet* presenceInput = new FuzzySet(HIGH, HIGH, HIGH, HIGH); // Representa 'true'
+
+// Illuminación
+FuzzySet* dark = new FuzzySet(0, 0, 10, 50);
+FuzzySet* day = new FuzzySet(30, 100, 500, 1000);
+
+// Definimos las variables FuzzySet para los outputs
+// Led
+FuzzySet* minLight = new FuzzySet(0, 0, 0, 0);
+FuzzySet* maxLight = new FuzzySet(600, 800, 1023, 1023);
 // Configuración de los elementos de la iluminación
 void setupIllumination() {
   // LDR
@@ -14,6 +30,33 @@ void setupIllumination() {
   pinMode(RED_LED_PIN, OUTPUT);
   // Sensor PIR
   pinMode(PIR_MOTION_PIN, INPUT);
+
+  // Presencia
+  FuzzyInput* presence = new FuzzyInput(1);
+  presence->addFuzzySet(noPresenceInput);
+  presence->addFuzzySet(presenceInput);
+  fuzzyIllumination->addFuzzyInput(presence);
+  // Illuminación
+  FuzzyInput* light = new FuzzyInput(2);
+  light->addFuzzySet(dark);
+  light->addFuzzySet(day);
+  fuzzyIllumination->addFuzzyInput(light);
+  // Fuzzy outputs
+  // Nuestro output es el led
+  FuzzyOutput* ledLight = new FuzzyOutput(1);
+  ledLight->addFuzzySet(minLight);
+  ledLight->addFuzzySet(maxLight);
+  fuzzyIllumination->addFuzzyOutput(ledLight);
+
+  // Definimos las reglas de Fuzzy para el control
+  // Regla 1: si la es de noche y se detecta presencia -> se enciende el led
+  FuzzyRuleAntecedent* ifNightAndPresence = new FuzzyRuleAntecedent();
+  ifNightAndPresence->joinWithAND(dark, presenceInput);
+  // Creamos la consecuencia/accion de encender el led
+  FuzzyRuleConsequent* thenLedOn = new FuzzyRuleConsequent();
+  thenLedOn->addOutput(maxLight);
+  FuzzyRule* rule1 = new FuzzyRule(1, ifNightAndPresence, thenLedOn);
+  fuzzyIllumination->addFuzzyRule(rule1);
 }
 // Función para la lectura del LDR, realiza la conversión a Lux
 int readLDRSensor() {
@@ -27,26 +70,25 @@ bool readMotionSensor() {
   return sensorVal == HIGH;
 }
 
-// Gestiona el LED RGB, que se encenderá en caso de que se detecte presencia y no
+// Gestiona el LED RGB, que se encenderá en caso de que se detecte presencia y no 
 // haya luz
 void illuminationManagement(int ldrValue, bool isPresence) {
-  // Solo se enciende el led en verde si hay poca luz y se detecta presencia
-  if (isPresence) {
-    if (ldrValue < LDR_THRESHOLD) {
-      rgbLedColor(HIGH, LOW, HIGH);
-    } else {
-      rgbLedColor(LOW, LOW, LOW);
-    }
-  } else {
-    rgbLedColor(LOW, LOW, LOW);
-  }
-}
+  // Incluimos los inputs a la libreria de la logica Fuzzy
+  fuzzyIllumination->setInput(1, isPresence);
+  fuzzyIllumination->setInput(2, ldrValue);
+  // Ejecutamos el fuzzify() para ejecutar el algoritmo
+  fuzzyIllumination->fuzzify();
+  float ledValue = fuzzyIllumination->defuzzify(1);
+  rgbLedColor(ledValue, 0, ledValue);
 
+  Serial.print("LED->");
+  Serial.println(ledValue);
+}
 // Funcion para encender el LED RGB
 void rgbLedColor(int redValue, int greenValue, int blueValue) {
-  digitalWrite(RED_LED_PIN, redValue);
-  digitalWrite(GREEN_LED_PIN, greenValue);
-  digitalWrite(BLUE_LED_PIN, blueValue);
+  analogWrite(RED_LED_PIN, redValue);
+  analogWrite(GREEN_LED_PIN, greenValue);
+  analogWrite(BLUE_LED_PIN, blueValue);
 }
 
 // Convierte los valores analógicos del LDR a Lux - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor
