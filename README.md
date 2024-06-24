@@ -41,6 +41,11 @@ Se ha grabado un video con la demo del codigo con el circuito físico. Haz click
 
 [![Demo](./doc/img/demo_circuit.png)](https://youtu.be/6NCw_0ztRkU)
 
+
+## Esquema de conexiones
+
+![Esquema_conexiones](./hardware/Esquema de conexiones.jpeg)
+
 ## Componentes
 
 A contiuación se listarán los componentes necesarios para la realización de la simulación. 
