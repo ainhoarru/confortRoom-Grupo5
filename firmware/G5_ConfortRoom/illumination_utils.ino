@@ -86,9 +86,9 @@ void illuminationManagement(int ldrValue, bool isPresence) {
 }
 // Funcion para encender el LED RGB
 void rgbLedColor(int redValue, int greenValue, int blueValue) {
-  analogWrite(RED_LED_PIN, redValue);
-  analogWrite(GREEN_LED_PIN, greenValue);
-  analogWrite(BLUE_LED_PIN, blueValue);
+  digitalWrite(RED_LED_PIN, redValue);
+  digitalWrite(GREEN_LED_PIN, greenValue);
+  digitalWrite(BLUE_LED_PIN, blueValue);
 }
 
 // Convierte los valores analógicos del LDR a Lux - https://docs.wokwi.com/parts/wokwi-photoresistor-sensor
