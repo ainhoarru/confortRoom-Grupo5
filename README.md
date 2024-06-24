@@ -135,11 +135,18 @@ Como opciones de mejora se ha implementado un buzzer que se active en el modo de
 ![Mejoras](./doc/img/wokwi_mejoras.png)
 
 
-## Código
+## Lógica de Control
+
+Hemos empleado Fuzzy Logic para implementar el control. En primer lugar, hemos añadido la librería correspondiente:
 
 ```
-// Definimos las reglas de Fuzzy para el control
-// Regla 1: si la es de noche y se detecta presencia -> se enciende el led
+#include <Fuzzy.h>
+```
+
+A continuación, hemos definido las reglas para gestionar el control de la luz:
+
+```
+// Regla 1: si ya es de noche y se detecta presencia -> se enciende el led
 FuzzyRuleAntecedent* ifNightAndPresence = new FuzzyRuleAntecedent();
 ifNightAndPresence->joinWithAND(dark, presenceInput);
 // Creamos la consecuencia/accion de encender el led
@@ -147,10 +154,10 @@ FuzzyRuleConsequent* thenLedOn = new FuzzyRuleConsequent();
 thenLedOn->addOutput(maxLight);
 FuzzyRule* rule1 = new FuzzyRule(1, ifNightAndPresence, thenLedOn);
 fuzzyIllumination->addFuzzyRule(rule1);
+```
+Y por último, hemos definido las reglas del control de la ventana:
 
-// ...
-
-// Definimos las reglas de Fuzzy para el control
+```
 // Regla 1: si la temperatura o la humedad es alta, abrir la ventana (servo)
 FuzzyRuleAntecedent* ifTempHighAndHumidityHigh = new FuzzyRuleAntecedent();
 ifTempHighAndHumidityHigh->joinWithOR(hot, humid);
@@ -169,5 +176,4 @@ thenOpenWindowVentilation->addOutput(minPosition);
 FuzzyRule* rule2 = new FuzzyRule(2, ifTempHighExtTempLow, thenOpenWindowVentilation);
 fuzzyWindow->addFuzzyRule(rule2);
 
-// ...
-...
+```
