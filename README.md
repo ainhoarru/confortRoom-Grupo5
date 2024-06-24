@@ -44,7 +44,7 @@ Se ha grabado un video con la demo del codigo con el circuito físico. Haz click
 
 ## Esquema de conexiones
 
-![Esquema_conexiones](./hardware/Esquema de conexiones.jpeg)
+![Esquema](./doc/img/esquema.jpeg)
 
 ## Componentes
 
