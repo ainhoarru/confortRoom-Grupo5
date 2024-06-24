@@ -133,3 +133,39 @@ Como opciones de mejora se ha implementado un buzzer que se active en el modo de
 [Enlace](https://wokwi.com/projects/399625353140785153)
 
 ![Mejoras](./doc/img/wokwi_mejoras.png)
+
+
+## Código
+
+//
+// Definimos las reglas de Fuzzy para el control
+  // Regla 1: si la es de noche y se detecta presencia -> se enciende el led
+  FuzzyRuleAntecedent* ifNightAndPresence = new FuzzyRuleAntecedent();
+  ifNightAndPresence->joinWithAND(dark, presenceInput);
+  // Creamos la consecuencia/accion de encender el led
+  FuzzyRuleConsequent* thenLedOn = new FuzzyRuleConsequent();
+  thenLedOn->addOutput(maxLight);
+  FuzzyRule* rule1 = new FuzzyRule(1, ifNightAndPresence, thenLedOn);
+  fuzzyIllumination->addFuzzyRule(rule1);
+...
+
+//
+// Definimos las reglas de Fuzzy para el control
+  // Regla 1: si la temperatura o la humedad es alta, abrir la ventana (servo)
+  FuzzyRuleAntecedent* ifTempHighAndHumidityHigh = new FuzzyRuleAntecedent();
+  ifTempHighAndHumidityHigh->joinWithOR(hot, humid);
+  // Creamos la consecuencia/accion de abrir la ventana del todo
+  FuzzyRuleConsequent* thenOpenWindow = new FuzzyRuleConsequent();
+  thenOpenWindow->addOutput(maxPosition);
+  FuzzyRule* rule1 = new FuzzyRule(1, ifTempHighAndHumidityHigh, thenOpenWindow);
+  fuzzyWindow->addFuzzyRule(rule1);
+  // Regla 2: si es de noche, la temperatura interior es menor a la exterior -> abrir la ventana en ventilación (servo)
+  FuzzyRuleAntecedent* ifTempHighExtTempLow = new FuzzyRuleAntecedent();
+  ifTempHighExtTempLow->joinWithAND(warm, warmExt);
+  // Creamos la consecuencia/accion de abrir la ventana en ventilacion
+  FuzzyRuleConsequent* thenOpenWindowVentilation = new FuzzyRuleConsequent();
+  thenOpenWindowVentilation->addOutput(minPosition);
+  FuzzyRule* rule2 = new FuzzyRule(2, ifTempHighExtTempLow, thenOpenWindowVentilation);
+  fuzzyWindow->addFuzzyRule(rule2);
+}
+...
