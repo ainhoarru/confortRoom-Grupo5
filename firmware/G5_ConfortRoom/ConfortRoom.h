@@ -12,7 +12,8 @@
 #include "dht.h"
 // Libreria para el uso del Servo Motor
 #include <Servo.h>
-
+// Libreria para el uso de la libreria Fuzzy
+#include <Fuzzy.h>
 // Definición de variables globales
 // DHT
 #define DHT_SENSOR_PIN 3

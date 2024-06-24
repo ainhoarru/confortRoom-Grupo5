@@ -1,72 +1,93 @@
 #include "ConfortRoom.h"
 
-// Definicion de la variable del motor
+// Objeto para el control del servo
 Servo servoMotor;
 
-// Definición de variables para la apertura/cerrado del servomotor
-unsigned long nightVentStartTime = 0;
-unsigned long nightVentFinishTime = 0;
-bool nightVentActive = false;
-bool nightVentDone = false;
+// Objetos para la libreria Fuzzy
+Fuzzy *fuzzyWindow = new Fuzzy();
 
-// Configuración del pin de lectura del Servo Motor
+// Definimos las variables FuzzySet para la logica Fuzzy
+// Temperatura
+FuzzySet* cold = new FuzzySet(0, 0, 10, 20);
+FuzzySet* warm = new FuzzySet(15, 20, 25, 30);
+FuzzySet* hot = new FuzzySet(25, 35, 40, 40);
+
+// TemperaturaExt
+FuzzySet* coldExt = new FuzzySet(0, 0, 10, 20);
+FuzzySet* warmExt = new FuzzySet(15, 20, 20, 20);
+FuzzySet* hotExt = new FuzzySet(25, 35, 40, 40);
+
+// Humedad
+FuzzySet* dry = new FuzzySet(0, 0, 60, 70);
+FuzzySet* humid = new FuzzySet(60, 70, 80, 80);
+
+// Definimos las variables FuzzySet para los outputs
+// Servo
+FuzzySet* minPosition = new FuzzySet(10, 20, 20, 30);
+FuzzySet* midPosition = new FuzzySet(70, 90, 90, 110);
+FuzzySet* maxPosition = new FuzzySet(110, 180, 180, 180);
+
 void servoInit() {
   servoMotor.attach(SERVO_PIN);
+  // Fuzzy inputs
+  // Temperatura
+  FuzzyInput* temperature = new FuzzyInput(1);
+  temperature->addFuzzySet(cold);
+  temperature->addFuzzySet(warm);
+  temperature->addFuzzySet(hot);
+  fuzzyWindow->addFuzzyInput(temperature);
+  // Temperatura exterior
+  FuzzyInput* temperatureExt = new FuzzyInput(2);
+  temperatureExt->addFuzzySet(coldExt);
+  temperatureExt->addFuzzySet(warmExt);
+  temperatureExt->addFuzzySet(hotExt);
+  fuzzyWindow->addFuzzyInput(temperatureExt);
+  // Humedad
+  FuzzyInput* humidity = new FuzzyInput(3);
+  humidity->addFuzzySet(dry);
+  humidity->addFuzzySet(humid);
+  fuzzyWindow->addFuzzyInput(humidity);
+
+  // Fuzzy outputs
+  // Nuestro output es el servo motor
+  FuzzyOutput* servoAngle = new FuzzyOutput(1);
+  servoAngle->addFuzzySet(minPosition);
+  servoAngle->addFuzzySet(midPosition);
+  servoAngle->addFuzzySet(maxPosition);
+  fuzzyWindow->addFuzzyOutput(servoAngle);
+
+  // Definimos las reglas de Fuzzy para el control
+  // Regla 1: si la temperatura o la humedad es alta, abrir la ventana (servo)
+  FuzzyRuleAntecedent* ifTempHighAndHumidityHigh = new FuzzyRuleAntecedent();
+  ifTempHighAndHumidityHigh->joinWithOR(hot, humid);
+  // Creamos la consecuencia/accion de abrir la ventana del todo
+  FuzzyRuleConsequent* thenOpenWindow = new FuzzyRuleConsequent();
+  thenOpenWindow->addOutput(maxPosition);
+  FuzzyRule* rule1 = new FuzzyRule(1, ifTempHighAndHumidityHigh, thenOpenWindow);
+  fuzzyWindow->addFuzzyRule(rule1);
+  // Regla 2: si es de noche, la temperatura interior es menor a la exterior -> abrir la ventana en ventilación (servo)
+  FuzzyRuleAntecedent* ifTempHighExtTempLow = new FuzzyRuleAntecedent();
+  ifTempHighExtTempLow->joinWithAND(warm, warmExt);
+  // Creamos la consecuencia/accion de abrir la ventana en ventilacion
+  FuzzyRuleConsequent* thenOpenWindowVentilation = new FuzzyRuleConsequent();
+  thenOpenWindowVentilation->addOutput(minPosition);
+  FuzzyRule* rule2 = new FuzzyRule(2, ifTempHighExtTempLow, thenOpenWindowVentilation);
+  fuzzyWindow->addFuzzyRule(rule2);
 }
 
-// Funcion para la gestion de las posiciones del ServoMotor
-void servoManage(float temperature, float tempExterior, float tempObjetivo) {
+void servoManage(float temperature, float tempExterior, bool presence, float humidity, int illuminationVal) {
+  // Incluimos los inputs a la libreria de la logica Fuzzy
+  fuzzyWindow->setInput(1, temperature);
+  fuzzyWindow->setInput(2, tempExterior);
+  fuzzyWindow->setInput(3, humidity);
+  // Ejecutamos el fuzzify() para ejecutar el algoritmo
+  fuzzyWindow->fuzzify();
 
-  // Evaluar condición de emergencia
-  if (temperature > TEMPERATURE_EMERGENCY_THRESHOLD && humidity > HUMIDITY_EMERGENCY_THRESHOLD) {
-    // Si la temperatura interior supera el umbral de emergencia y la humedad interior también supera su umbral de emergencia
-    servoMotor.write(90);  // Abrir la ventana completamente (servomotor a 90 grados)
-    Serial.println("EMERGENCIA");
+  // Obtenemos la posicion del servo mediante la funcion defuzzify y obteniendo el output 1
+  float servoPosition = fuzzyWindow->defuzzify(1);
 
-  } else {
-    // Si no hay una condición de emergencia, evaluar la ventilación nocturna automática
-    if (illuminationVal < NIGHT_LIGHT_THRESHOLD && !presence) {
-      // Si el valor del sensor de luz indica noche y no hay presencia detectada
-      if (!nightVentDone) {
-        // Si la ventilación nocturna no se ha realizado en esta hora
-        if (!nightVentActive) {
-          // Si la ventilación nocturna no está activa, iniciar el proceso
-          nightVentActive = true;         // Marcar la ventilación nocturna como activa
-          nightVentStartTime = millis();  // Guardar el tiempo de inicio de la ventilación nocturna
-          servoMotor.write(90);           // Abrir la ventana completamente (servomotor a 90 grados)
-          Serial.println("Ventilacion nocturna: ventana abierta");
-
-        } else if (millis() - nightVentStartTime >= 30000) {  // Si han pasado 5 minutos desde el inicio de la ventilación nocturna (300000 milisegundos = 5 minutos)
-          nightVentActive = false;                            // Marcar la ventilación nocturna como inactiva
-          nightVentDone = true;                               // Marcar la ventilación nocturna como realizada
-          servoMotor.write(0);                                // Cerrar la ventana completamente (servomotor a 0 grados)
-          Serial.println("Ventilacion nocturna ACABADA: ventana cerrada");
-          nightVentFinishTime = millis();
-        }
-      } else {
-        if (millis() - nightVentFinishTime >= 3600000) {  // Forzamos un tiempo de espera de 1 hora entre ciclos de ventilación
-          // Si no es de noche o hay presencia detectada, reiniciar la bandera de ventilación nocturna realizada
-          nightVentDone = false;  // Resetear la bandera para la siguiente hora
-        }
-      }
-    } else {
-      servoMotor.write(0);      // Cerrar la ventana completamente (servomotor a 0 grados)
-      nightVentActive = false;  // Marcar la ventilación nocturna como inactiva
-    }
-
-    // Evaluar ventilación por temperatura y humedad si no hay ventilación nocturna activa
-    if (!nightVentActive) {
-      // Si la ventilación nocturna no está activa, evaluar la ventilación combinada por temperatura y humedad
-      if (temperature > TEMPERATURE_THRESHOLD && tempExterior < temperature && humidity < HUMIDITY_THRESHOLD) {
-        // Si la temperatura interior es mayor que el umbral, la temperatura exterior es menor que la interior, y la humedad interior es menor que el umbral
-        servoMotor.write(90);  // Abrir la ventana completamente (servomotor a 90 grados)
-        Serial.println("ABIERTO");
-
-      } else {
-        // Si no se cumplen las condiciones para abrir la ventana
-        servoMotor.write(0);  // Cerrar la ventana completamente (servomotor a 0 grados)
-        Serial.println("CERRADO");
-      }
-    }
-  }
+  // Aplicamos el valor obtenido en la posicion del servo
+  servoMotor.write(servoPosition);
+  Serial.print("Servo->");
+  Serial.println(servoPosition);
 }
